@@ -55,24 +55,51 @@ export default function Navbar({ isLoggedIn }) {
         >
           Services
         </Link>
-        {isLoggedIn ? (
-          <>
-            <Link 
-              to="/loan-application" 
+        <Link 
+          to="/account" 
+          onClick={() => setMenuOpen(false)} 
+          className={`block px-3 py-2 rounded-lg transition ${isActive("/services") ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100"}`}
+          aria-current={isActive("/services") ? "page" : undefined}
+        >
+          Create Account
+        </Link>
+        <Link 
+              to="/repayment" 
               onClick={() => setMenuOpen(false)} 
               className={`block px-3 py-2 rounded-lg transition ${isActive("/loan-application") ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100"}`}
-              aria-current={isActive("/loan-application") ? "page" : undefined}
+              aria-current={isActive("/repayment") ? "page" : undefined}
             >
-              Loan Application
-            </Link>
-            <Link 
+              Repayment
+        </Link>
+        <Link 
               to="/dashboard" 
               onClick={() => setMenuOpen(false)} 
               className={`block px-3 py-2 rounded-lg transition ${isActive("/dashboard") ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100"}`}
               aria-current={isActive("/dashboard") ? "page" : undefined}
             >
               Dashboard
+        </Link>
+        
+        {isLoggedIn ? (
+          <> 
+            <Link 
+              to="/transaction" 
+              onClick={() => setMenuOpen(false)} 
+              className={`block px-3 py-2 rounded-lg transition ${isActive("/loan-application") ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100"}`}
+              aria-current={isActive("/transaction") ? "page" : undefined}
+            >
+              Transaction
             </Link>
+            <Link 
+              to="/loanappliaction" 
+              onClick={() => setMenuOpen(false)} 
+              className={`block px-3 py-2 rounded-lg transition ${isActive("/loan-application") ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100"}`}
+              aria-current={isActive("/loanappliaction") ? "page" : undefined}
+            >
+              Loan Application
+            </Link>
+            
+            
           </>
         ) : (
           <>
@@ -90,7 +117,7 @@ export default function Navbar({ isLoggedIn }) {
               className={`block px-3 py-2 rounded-lg transition ${isActive("/register") ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-100"}`}
               aria-current={isActive("/register") ? "page" : undefined}
             >
-              Create Account
+              Sign Up
             </Link>
           </>
         )}

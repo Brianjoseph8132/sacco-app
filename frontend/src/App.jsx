@@ -8,6 +8,11 @@ import About from './pages/About'
 import Service from './pages/Service'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import CreateAccount from './pages/CreatAccount'
+import LoanApplication from './pages/LoanApplication'
+import Repayment from './pages/Repayment'
+import Transaction from './pages/Transaction'
+import DashBoard from './pages/DashBoard'
 
 function App() {
   
@@ -22,6 +27,11 @@ function App() {
           <Route path='service' element={<Service/>}/>
           <Route path='login' element={<Login/>}/>
           <Route path='register' element={<Register/>}/>
+          <Route path='account' element={<CreateAccount/>}/>
+          <Route path='loanappliaction'element={<LoanApplication/>}/>
+          <Route path='repayment' element={<Repayment/>}/>
+          <Route path='transaction' element={<Transaction/>}/>
+          <Route path='dashboard' element={<DashBoard/>}/>
           </Route>
         </Route>
       </Routes>
