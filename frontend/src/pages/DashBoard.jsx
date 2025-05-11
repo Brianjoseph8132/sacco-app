@@ -1,98 +1,168 @@
-import React, { useState } from "react";
-import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { FiDollarSign, FiArrowUpRight, FiArrowDownLeft } from "react-icons/fi";
 
-const DashBoard = () => {
-  const [filter, setFilter] = useState("All");
+const Dashboard = () => {
+  const [greeting, setGreeting] = useState("");
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const transactionsPerPage = 5;
 
-  // Dummy transaction data
-  const transactions = [
-    { date: "2025-05-10", action: "Deposit", amount: 5000 },
-    { date: "2025-05-09", action: "Withdraw", amount: 2000 },
-    { date: "2025-05-08", action: "Deposit", amount: 3000 },
+  const mockTransactions = [
+    { id: 1, date: "2024-01-15", type: "deposit", amount: 5000 },
+    { id: 2, date: "2024-01-14", type: "withdraw", amount: 1500 },
+    { id: 3, date: "2024-01-13", type: "deposit", amount: 3000 },
+    { id: 4, date: "2024-01-12", type: "withdraw", amount: 2000 },
+    { id: 5, date: "2024-01-11", type: "deposit", amount: 4000 },
+    { id: 6, date: "2024-01-10", type: "withdraw", amount: 1000 },
+    { id: 7, date: "2024-01-09", type: "deposit", amount: 6000 }
   ];
 
-  // Filter logic
-  const filteredTransactions =
-    filter === "All"
-      ? transactions
-      : transactions.filter((t) => t.action === filter);
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good Morning");
+    else if (hour < 18) setGreeting("Good Afternoon");
+    else setGreeting("Good Evening");
 
-  return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
-      {/* Welcome */}
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Welcome, John Doe 👋</h1>
+    const fetchTransactions = async () => {
+      try {
+        setLoading(true);
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setTransactions(mockTransactions);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to load transactions");
+        setLoading(false);
+      }
+    };
 
-      {/* Cards Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {/* Balance Card */}
-        <div className="bg-white rounded-2xl p-6 shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Current Balance</h2>
-          <p className="text-3xl font-bold text-green-600">Ksh 12,500</p>
+    fetchTransactions();
+  }, []);
+
+  const WelcomeHeader = () => (
+    <div className="p-6 bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg shadow-lg mb-6">
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+        {greeting}, John Doe
+      </h1>
+      <p className="text-teal-100 text-lg">Welcome to your SACCO Dashboard</p>
+    </div>
+  );
+
+  const BalanceCard = () => (
+    <div className="bg-white rounded-lg shadow-lg p-6 mb-6 transform transition-all hover:scale-105">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-gray-600 text-lg">Current Balance</h2>
+        <FiDollarSign className="text-teal-500 text-2xl" />
+      </div>
+      <p className="text-4xl font-bold text-gray-800">$12,500.00</p>
+      <p className="text-sm text-gray-500 mt-2">Last updated: Today</p>
+    </div>
+  );
+
+  const TransactionHistory = () => {
+    const indexOfLastTransaction = currentPage * transactionsPerPage;
+    const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
+    const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+
+    if (loading) return <div className="text-center py-8">Loading transactions...</div>;
+    if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
+    if (!transactions.length) return <div className="text-center py-8">No transactions found</div>;
+
+    return (
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Transaction History</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3 px-4 text-gray-600">Date</th>
+                <th className="text-left py-3 px-4 text-gray-600">Type</th>
+                <th className="text-right py-3 px-4 text-gray-600">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentTransactions.map((transaction) => (
+                <tr
+                  key={transaction.id}
+                  className="border-b hover:bg-gray-50 transition-colors"
+                >
+                  <td className="py-3 px-4 text-gray-800">
+                    {new Date(transaction.date).toLocaleDateString()}
+                  </td>
+                  <td className="py-3 px-4">
+                    <div className="flex items-center">
+                      {transaction.type === "deposit" ? (
+                        <FiArrowUpRight className="text-green-500 mr-2" />
+                      ) : (
+                        <FiArrowDownLeft className="text-red-500 mr-2" />
+                      )}
+                      <span
+                        className={`capitalize ${
+                          transaction.type === "deposit"
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }`}
+                      >
+                        {transaction.type}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4 text-right">
+                    <span
+                      className={`font-medium ${
+                        transaction.type === "deposit"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      ${transaction.amount.toLocaleString()}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-
-        {/* Filters */}
-        <div className="bg-white rounded-2xl p-6 shadow-md flex flex-wrap items-center space-x-4">
-          {["All", "Deposit", "Withdraw"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilter(type)}
-              className={`px-4 py-2 rounded-lg ${
-                filter === type
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              } transition`}
-            >
-              {type}
-            </button>
-          ))}
+        <div className="mt-6 flex justify-between items-center">
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-teal-500 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="text-gray-600">
+            Page {currentPage} of {Math.ceil(transactions.length / transactionsPerPage)}
+          </span>
+          <button
+            onClick={() => setCurrentPage(prev => prev + 1)}
+            disabled={indexOfLastTransaction >= transactions.length}
+            className="px-4 py-2 bg-teal-500 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
         </div>
       </div>
+    );
+  };
 
-      {/* Transaction History */}
-      <div className="bg-white rounded-2xl p-6 shadow-md overflow-x-auto">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Transaction History</h2>
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="text-left bg-gray-50">
-              <th className="px-4 py-2 text-gray-600">Date</th>
-              <th className="px-4 py-2 text-gray-600">Action</th>
-              <th className="px-4 py-2 text-gray-600">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTransactions.map((t, index) => (
-              <tr
-                key={index}
-                className="border-b hover:bg-gray-50 transition"
-              >
-                <td className="px-4 py-2">{t.date}</td>
-                <td className="px-4 py-2 flex items-center space-x-2">
-                  {t.action === "Deposit" ? (
-                    <ArrowUpCircle className="w-5 h-5 text-green-600" />
-                  ) : (
-                    <ArrowDownCircle className="w-5 h-5 text-red-600" />
-                  )}
-                  <span
-                    className={`font-medium ${
-                      t.action === "Deposit" ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    {t.action}
-                  </span>
-                </td>
-                <td className="px-4 py-2">Ksh {t.amount.toLocaleString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {/* Empty State */}
-        {filteredTransactions.length === 0 && (
-          <p className="text-center text-gray-500 py-4">No transactions found.</p>
-        )}
+  return (
+    <div className="min-h-screen bg-gray-100 p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        <WelcomeHeader />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1">
+            <BalanceCard />
+          </div>
+          <div className="lg:col-span-2">
+            <TransactionHistory />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default DashBoard;
+export default Dashboard;

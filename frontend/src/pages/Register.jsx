@@ -1,44 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
+import { Link } from "react-router-dom";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    password: "",
-    repeatPassword: "",
-  });
+  const { addMember } = useContext(UserContext);
 
-  const [errors, setErrors] = useState({});
+  const [first_name, setFirstName] = useState('');
+  const [last_name, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [raw_password, setRawPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+  // Fix: define errors object (empty for now since validation is not implemented)
+  const errors = {};
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let validationErrors = {};
 
-    // Required field check
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        validationErrors[key] = "This field is required";
-      }
-    });
-
-    // Password match check
-    if (formData.password && formData.repeatPassword && formData.password !== formData.repeatPassword) {
-      validationErrors.repeatPassword = "Passwords do not match";
-    }
-
-    setErrors(validationErrors);
-
-    // If no errors, proceed (e.g., send formData to API)
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form submitted", formData);
-      // Reset form if needed
-    }
+    addMember(first_name, last_name, username, email, raw_password);
   };
 
   return (
@@ -54,12 +35,11 @@ const Register = () => {
             <input
               type="text"
               id="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.firstName ? 'border-red-500' : ''}`}
               placeholder="Enter your first name"
             />
-            {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
           </div>
 
           {/* Last Name */}
@@ -68,12 +48,11 @@ const Register = () => {
             <input
               type="text"
               id="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.lastName ? 'border-red-500' : ''}`}
               placeholder="Enter your last name"
             />
-            {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
           </div>
 
           {/* Username */}
@@ -82,12 +61,24 @@ const Register = () => {
             <input
               type="text"
               id="username"
-              value={formData.username}
-              onChange={handleChange}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : ''}`}
-              placeholder="Choose a username"
+              placeholder="Enter your username"
             />
-            {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label htmlFor="email" className="block text-gray-700 font-medium mb-1">Email</label>
+            <input
+              type="text"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : ''}`}
+              placeholder="Enter your Email"
+            />
           </div>
 
           {/* Password */}
@@ -96,12 +87,11 @@ const Register = () => {
             <input
               type="password"
               id="password"
-              value={formData.password}
-              onChange={handleChange}
+              value={raw_password}
+              onChange={(e) => setRawPassword(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : ''}`}
               placeholder="Create a password"
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
           {/* Repeat Password */}
@@ -110,12 +100,11 @@ const Register = () => {
             <input
               type="password"
               id="repeatPassword"
-              value={formData.repeatPassword}
-              onChange={handleChange}
+              value={repeatPassword}
+              onChange={(e) => setRepeatPassword(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.repeatPassword ? 'border-red-500' : ''}`}
               placeholder="Repeat your password"
             />
-            {errors.repeatPassword && <p className="text-red-500 text-sm mt-1">{errors.repeatPassword}</p>}
           </div>
 
           {/* Register Button */}
@@ -130,7 +119,7 @@ const Register = () => {
         {/* Already have an account? */}
         <p className="text-center text-gray-600 text-sm mt-6">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">Login</a>
+          <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
         </p>
       </div>
     </div>

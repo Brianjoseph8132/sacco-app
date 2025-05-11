@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const Login = () => {
+
+  const {login} = useContext(UserContext);
+
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    login(email, password)
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Login to Your Account</h2>
 
         {/* Email */}
-        <form className="space-y-4">
+        <form
+         onSubmit={handleSubmit} 
+         className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
             <input 
-              type="email" 
+              type="email"
+              value={email} 
               id="email" 
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
               placeholder="Enter your email"
             />
@@ -25,6 +42,8 @@ const Login = () => {
             <input 
               type="password" 
               id="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
               placeholder="Enter your password"
             />

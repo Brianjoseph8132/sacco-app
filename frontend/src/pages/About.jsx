@@ -1,5 +1,6 @@
 import React from "react";
 import { FaShieldAlt, FaChartLine, FaHandsHelping } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const About = () => {
   const coreValues = [
@@ -137,13 +138,17 @@ const About = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-blue-600 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">Join Our SACCO Today</h2>
-          <p className="text-xl text-blue-100 mb-8">Start your journey towards financial freedom and community prosperity.</p>
-          <button className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-colors duration-300 shadow-lg">
-            Create Account
-          </button>
+      <div className="bg-blue-600 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
+          <p className="text-white text-xl mb-8">Join our SACCO today and secure your financial future</p>
+          
+          <Link to="/register">
+            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300">
+              Create Account
+            </button>
+          </Link>
+
         </div>
       </div>
     </div>

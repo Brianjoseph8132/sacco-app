@@ -13,28 +13,40 @@ import LoanApplication from './pages/LoanApplication'
 import Repayment from './pages/Repayment'
 import Transaction from './pages/Transaction'
 import DashBoard from './pages/DashBoard'
+import { UserProvider } from './context/UserContext'
+import Contact from './pages/Contact'
+import { AccountProvider } from './context/AccountContext'
+
 
 function App() {
   
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route>
-          <Route path='/' element={<Layout/>}>
-          <Route index element={<Home/>}/>
-          <Route path='about' element={<About/>}/>
-          <Route path='service' element={<Service/>}/>
-          <Route path='login' element={<Login/>}/>
-          <Route path='register' element={<Register/>}/>
-          <Route path='account' element={<CreateAccount/>}/>
-          <Route path='loanappliaction'element={<LoanApplication/>}/>
-          <Route path='repayment' element={<Repayment/>}/>
-          <Route path='transaction' element={<Transaction/>}/>
-          <Route path='dashboard' element={<DashBoard/>}/>
-          </Route>
-        </Route>
-      </Routes>
+      <UserProvider>
+        <AccountProvider>
+        
+
+          <Routes>
+            <Route>
+              <Route path='/' element={<Layout/>}>
+              <Route index element={<Home/>}/>
+              <Route path='about' element={<About/>}/>
+              <Route path='service' element={<Service/>}/>
+              <Route path='login' element={<Login/>}/>
+              <Route path='register' element={<Register/>}/>
+              <Route path='account' element={<CreateAccount/>}/>
+              <Route path='loanappliaction'element={<LoanApplication/>}/>
+              <Route path='repayment' element={<Repayment/>}/>
+              <Route path='transaction' element={<Transaction/>}/>
+              <Route path='dashboard' element={<DashBoard/>}/>
+              <Route path='contact' element={<Contact/>}/>
+              </Route>
+            </Route>
+          </Routes>
+
+        </AccountProvider>
+      </UserProvider>
     </BrowserRouter>
   )
 }

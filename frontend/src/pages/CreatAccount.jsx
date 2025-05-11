@@ -1,59 +1,29 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AccountContext } from "../context/AccountContext";
 
 const CreateAccount = () => {
-  const [formData, setFormData] = useState({
-    phoneNumber: "",
-    idNumber: "",
-    occupation: "",
-    initialDeposit: "",
-    pin: "",
-  });
+  const { createAccount } = useContext(AccountContext);
 
-  const [errors, setErrors] = useState({});
+  const [initial_deposit, setInitialdeposit] = useState('');
+  const [pin, setPin] = useState('');
+  const [phone, setPhone] = useState('');
+  const [occupation, setOccupation] = useState('');
+  const [id_number, setIdnumber] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+  // Fix: define errors object (empty for now since validation is not implemented)
+  const errors = {};
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let validationErrors = {};
+    createAccount(initial_deposit, pin, phone, occupation, id_number);
 
-    // Check required fields
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        validationErrors[key] = "This field is required";
-      }
-    });
-
-    // Phone validation
-    if (formData.phoneNumber && !/^\d{7,15}$/.test(formData.phoneNumber)) {
-      validationErrors.phoneNumber = "Enter a valid phone number";
-    }
-
-    // ID number validation
-    if (formData.idNumber && !/^\d+$/.test(formData.idNumber)) {
-      validationErrors.idNumber = "ID must be a valid number";
-    }
-
-    // Initial deposit validation
-    if (formData.initialDeposit && isNaN(formData.initialDeposit)) {
-      validationErrors.initialDeposit = "Deposit must be a valid number";
-    }
-
-    // PIN validation (numeric and 4-6 digits)
-    if (formData.pin && !/^\d{4,6}$/.test(formData.pin)) {
-      validationErrors.pin = "PIN must be 4 to 6 digits";
-    }
-
-    setErrors(validationErrors);
-
-    // If no errors, proceed
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form submitted", formData);
-      // Reset form or call API
-    }
+    // reset the fields
+    setInitialdeposit('');
+    setIdnumber('');
+    setOccupation('')
+    setPhone('');
+    setPin("")
   };
 
   return (
@@ -69,26 +39,24 @@ const CreateAccount = () => {
             <input
               type="tel"
               id="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phoneNumber ? 'border-red-500' : ''}`}
               placeholder="Enter your phone number"
             />
-            {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
           </div>
 
           {/* ID Number */}
           <div>
             <label htmlFor="idNumber" className="block text-gray-700 font-medium mb-1">ID Number</label>
             <input
-              type="text"
+              type="number"
               id="idNumber"
-              value={formData.idNumber}
-              onChange={handleChange}
+              value={id_number}
+              onChange={(e) => setIdnumber(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.idNumber ? 'border-red-500' : ''}`}
               placeholder="Enter your ID number"
             />
-            {errors.idNumber && <p className="text-red-500 text-sm mt-1">{errors.idNumber}</p>}
           </div>
 
           {/* Occupation */}
@@ -97,12 +65,11 @@ const CreateAccount = () => {
             <input
               type="text"
               id="occupation"
-              value={formData.occupation}
-              onChange={handleChange}
+              value={occupation}
+              onChange={(e) => setOccupation(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.occupation ? 'border-red-500' : ''}`}
               placeholder="Enter your occupation"
             />
-            {errors.occupation && <p className="text-red-500 text-sm mt-1">{errors.occupation}</p>}
           </div>
 
           {/* Initial Deposit */}
@@ -111,12 +78,11 @@ const CreateAccount = () => {
             <input
               type="text"
               id="initialDeposit"
-              value={formData.initialDeposit}
-              onChange={handleChange}
+              value={initial_deposit}
+              onChange={(e) => setInitialdeposit(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.initialDeposit ? 'border-red-500' : ''}`}
               placeholder="Enter initial deposit amount"
             />
-            {errors.initialDeposit && <p className="text-red-500 text-sm mt-1">{errors.initialDeposit}</p>}
           </div>
 
           {/* PIN */}
@@ -125,12 +91,11 @@ const CreateAccount = () => {
             <input
               type="password"
               id="pin"
-              value={formData.pin}
-              onChange={handleChange}
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.pin ? 'border-red-500' : ''}`}
               placeholder="Enter a 4-6 digit PIN"
             />
-            {errors.pin && <p className="text-red-500 text-sm mt-1">{errors.pin}</p>}
           </div>
 
           {/* Create Account Button */}
