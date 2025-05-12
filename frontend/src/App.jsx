@@ -16,6 +16,8 @@ import DashBoard from './pages/DashBoard'
 import { UserProvider } from './context/UserContext'
 import Contact from './pages/Contact'
 import { AccountProvider } from './context/AccountContext'
+import History from './pages/History'
+import { LoanProvider } from './context/LoanContext'
 
 
 function App() {
@@ -25,26 +27,29 @@ function App() {
     <BrowserRouter>
       <UserProvider>
         <AccountProvider>
+          <LoanProvider>
         
 
-          <Routes>
-            <Route>
-              <Route path='/' element={<Layout/>}>
-              <Route index element={<Home/>}/>
-              <Route path='about' element={<About/>}/>
-              <Route path='service' element={<Service/>}/>
-              <Route path='login' element={<Login/>}/>
-              <Route path='register' element={<Register/>}/>
-              <Route path='account' element={<CreateAccount/>}/>
-              <Route path='loanappliaction'element={<LoanApplication/>}/>
-              <Route path='repayment' element={<Repayment/>}/>
-              <Route path='transaction' element={<Transaction/>}/>
-              <Route path='dashboard' element={<DashBoard/>}/>
-              <Route path='contact' element={<Contact/>}/>
+            <Routes>
+              <Route>
+                <Route path='/' element={<Layout/>}>
+                <Route index element={<Home/>}/>
+                <Route path='about' element={<About/>}/>
+                <Route path='service' element={<Service/>}/>
+                <Route path='login' element={<Login/>}/>
+                <Route path='register' element={<Register/>}/>
+                <Route path='account' element={<CreateAccount/>}/>
+                <Route path='appliaction' element={<LoanApplication/>}/>
+                <Route path='repayment' element={<Repayment/>}/>
+                <Route path='transaction' element={<Transaction/>}/>
+                <Route path='dashboard' element={<DashBoard/>}/>
+                <Route path='contact' element={<Contact/>}/>
+                <Route path='/history' element={<History/>}/>
+                </Route>
               </Route>
-            </Route>
-          </Routes>
+            </Routes>
 
+          </LoanProvider>
         </AccountProvider>
       </UserProvider>
     </BrowserRouter>

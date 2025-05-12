@@ -1,47 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AccountContext } from "../context/AccountContext";
 
 const LoanApplication = () => {
-  const [formData, setFormData] = useState({
-    amount: "",
-    purpose: "",
-    months: "",
-    guarantorUsername: "",
-  });
+  const { loanApplication } = useContext(AccountContext);
 
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+  const [purpose, setPurpose] = useState("");
+  const [amount, setAmount] = useState("");
+  const [term_months, setTermmonths] = useState("");
+  const [guarantor_username, setGuarantorUsername] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let validationErrors = {};
+    loanApplication(amount, purpose, term_months, guarantor_username);
 
-    // Required fields check
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        validationErrors[key] = "This field is required";
-      }
-    });
-
-    // Amount validation
-    if (formData.amount && (+formData.amount <= 0 || isNaN(formData.amount))) {
-      validationErrors.amount = "Amount must be a positive number";
-    }
-
-    // Months validation
-    if (formData.months && (+formData.months <= 0 || isNaN(formData.months))) {
-      validationErrors.months = "Months must be a valid positive number";
-    }
-
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Loan Application Submitted", formData);
-      // Reset or send to backend API
-    }
+    // reset the fields
+    setAmount("");
+    setPurpose("");
+    setTermmonths("");
+    setGuarantorUsername("");
   };
 
   return (
@@ -57,12 +34,11 @@ const LoanApplication = () => {
             <input
               type="number"
               id="amount"
-              value={formData.amount}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.amount ? 'border-red-500' : ''}`}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter loan amount"
             />
-            {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount}</p>}
           </div>
 
           {/* Purpose */}
@@ -70,13 +46,12 @@ const LoanApplication = () => {
             <label htmlFor="purpose" className="block text-gray-700 font-medium mb-1">Purpose</label>
             <textarea
               id="purpose"
-              value={formData.purpose}
-              onChange={handleChange}
+              value={purpose}
+              onChange={(e) => setPurpose(e.target.value)}
               rows="3"
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.purpose ? 'border-red-500' : ''}`}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Describe purpose of the loan"
             ></textarea>
-            {errors.purpose && <p className="text-red-500 text-sm mt-1">{errors.purpose}</p>}
           </div>
 
           {/* Months */}
@@ -85,12 +60,11 @@ const LoanApplication = () => {
             <input
               type="number"
               id="months"
-              value={formData.months}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.months ? 'border-red-500' : ''}`}
+              value={term_months}
+              onChange={(e) => setTermmonths(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter number of months"
             />
-            {errors.months && <p className="text-red-500 text-sm mt-1">{errors.months}</p>}
           </div>
 
           {/* Guarantor Username */}
@@ -99,12 +73,11 @@ const LoanApplication = () => {
             <input
               type="text"
               id="guarantorUsername"
-              value={formData.guarantorUsername}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.guarantorUsername ? 'border-red-500' : ''}`}
+              value={guarantor_username}
+              onChange={(e) => setGuarantorUsername(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter guarantor's username"
             />
-            {errors.guarantorUsername && <p className="text-red-500 text-sm mt-1">{errors.guarantorUsername}</p>}
           </div>
 
           {/* Apply Button */}

@@ -169,6 +169,7 @@ export const  UserProvider = ({children}) => {
 
     const data = {
         login,
+        authToken,
         current_user,
         logout,
         addMember,

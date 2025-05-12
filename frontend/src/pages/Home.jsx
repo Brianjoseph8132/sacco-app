@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaMoneyBillAlt, FaShieldAlt, FaBolt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { AccountContext } from "../context/AccountContext";
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {hasAccount} = useContext(AccountContext);
+
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -17,9 +21,22 @@ const Home = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Empowering Communities Through Financial Growth</h1>
               <p className="text-lg mb-8">Join our SACCO to access secure savings, affordable loans, and fast transactions. Build a better financial future together.</p>
               <div className="flex flex-wrap gap-4">
-                <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition">Create Account</button>
-                <button className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition">Login</button>
-                <button className="bg-blue-800 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-900 transition">Learn More</button>
+              {hasAccount ? (
+                <Link to="/about">
+                  <button className="bg-blue-800 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-900 transition">Learn More</button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/account">
+                    <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition">Create Account</button>
+                  </Link>
+                  <Link to="/about">
+                    <button className="bg-blue-800 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-900 transition">Learn More</button>
+                  </Link>
+                </>
+              )}
+
+                
               </div>
             </div>
             <div className="md:w-1/2">

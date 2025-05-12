@@ -10,22 +10,26 @@ const CreateAccount = () => {
   const [occupation, setOccupation] = useState('');
   const [id_number, setIdnumber] = useState('');
 
-  // Fix: define errors object (empty for now since validation is not implemented)
+  
   const errors = {};
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    createAccount(initial_deposit, pin, phone, occupation, id_number);
-
+  
+    // Convert initial_deposit to float and id_number to int
+    const depositAmount = parseFloat(initial_deposit);
+    const idNum = parseInt(id_number);
+  
+    createAccount(depositAmount, pin, phone, occupation, idNum);
+  
     // reset the fields
     setInitialdeposit('');
     setIdnumber('');
-    setOccupation('')
+    setOccupation('');
     setPhone('');
-    setPin("")
+    setPin('');
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg">
@@ -94,7 +98,7 @@ const CreateAccount = () => {
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.pin ? 'border-red-500' : ''}`}
-              placeholder="Enter a 4-6 digit PIN"
+              placeholder="Enter a 4-digit PIN"
             />
           </div>
 
