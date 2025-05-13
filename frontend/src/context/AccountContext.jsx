@@ -18,7 +18,7 @@ export const  AccountProvider = ({children}) => {
 
     const [balance, setBalance] = useState(0)
     const [transactions, setTransactions] = useState([]);
-    const [onChange, setOnChange] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [hasAccount, setHasAccount] = useState(null);
     // const [is_fully_paid, setIsFullyPaid] = useState(false);
 
@@ -37,7 +37,7 @@ export const  AccountProvider = ({children}) => {
         .then((response) => {
             setBalance(response.balance);
         });
-    }, [onChange]);
+    }, [loading]);
 
 
      // =========Transaction History======
@@ -58,7 +58,7 @@ export const  AccountProvider = ({children}) => {
                 console.warn("No transactions found or invalid response:", response);
             }
         });        
-    }, []);
+    }, [loading]);
 
     // // =========Transaction=========
 
@@ -143,7 +143,7 @@ export const  AccountProvider = ({children}) => {
         .then((response) => {
             setHasAccount(response.has_account);
         });
-    }, []);
+    }, [loading]);
 
 
     // ========LOan Application

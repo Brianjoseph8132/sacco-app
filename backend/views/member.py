@@ -11,15 +11,6 @@ member_bp = Blueprint("member_bp", __name__)
 
 
 
-# Validate Kenyan phone number format
-def validate_kenyan_phone_number(phone):
-    pattern = r'^\+254\d{9}$'  # +254 followed by exactly 9 digits
-    if not re.match(pattern, phone):
-        return False
-    return True
-
-
-
 # Add Member 
 @member_bp.route("/members", methods=["POST"])
 def add_members():

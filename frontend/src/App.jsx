@@ -19,6 +19,7 @@ import { AccountProvider } from './context/AccountContext'
 import History from './pages/History'
 import { LoanProvider } from './context/LoanContext'
 import RepaymentHistory from './pages/RepaymentHistory'
+import Notification from './pages/Notification'
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
                 <Route path='contact' element={<Contact/>}/>
                 <Route path='/history' element={<History/>}/>
                 <Route path='/repayment_history/:loan_id' element={<RepaymentHistory/>}/>
+                <Route path='/notifications' element={<Notification/>}/>
                 </Route>
               </Route>
             </Routes>

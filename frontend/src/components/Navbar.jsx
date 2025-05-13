@@ -3,15 +3,17 @@ import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { AccountContext } from "../context/AccountContext";
+import { LoanContext } from "../context/LoanContext";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const { current_user, logout } = useContext(UserContext);
   const { hasAccount } = useContext(AccountContext);
+  const {unreadCount} = useContext(LoanContext);
 
   // Mocked notifications count for demo. Replace this with real notifications count from context or API.
-  const notificationsCount = 3;
+  
 
   const isActive = (path) => location.pathname === path;
 
@@ -63,9 +65,9 @@ export default function Navbar() {
                   className="relative flex items-center justify-center text-gray-700 hover:text-blue-600"
                 >
                   <BellIcon className="h-6 w-6" />
-                  {notificationsCount > 0 && (
+                  {unreadCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                      {notificationsCount}
+                      {unreadCount}
                     </span>
                   )}
                 </Link>

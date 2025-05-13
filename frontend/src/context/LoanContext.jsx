@@ -21,7 +21,7 @@ export const LoanProvider = ({children}) => {
     const [loanDetails, setLoanDetails] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [notification, setNotification] = useState([])
+    const [notifications, setNotifications] = useState([])
     const [unreadCount, setUnreadCount] = useState(0);
    
 
@@ -138,7 +138,7 @@ export const LoanProvider = ({children}) => {
             })
             .then((response) => response.json())
             .then((response) => {
-                setNotification(response.notifications || []); // Ensure it's always an array
+                setNotifications(response.notifications || []); // Ensure it's always an array
             })
             .catch((error) => console.error("Error fetching notifications:", error));
         }, [loading]);
@@ -158,12 +158,12 @@ export const LoanProvider = ({children}) => {
             .then((response) => {
                 toast.dismiss();
                 
-                if (response.message === "Notification deleted successfully") {
-                    toast.success(response.message);
-                    setLoading(!loading); 
+                if (response.success === "Notification deleted successfully") {
+                    toast.success(response.success);
+                    setLoading(!loading);
                 } else {
-                    toast.error(response.message || "Failed to delete");
-                }
+                    toast.error(response.error || "Failed to delete");
+                }                
             })
             .catch((error) => {
                 toast.dismiss();
@@ -176,7 +176,7 @@ export const LoanProvider = ({children}) => {
         const markAsRead = (notification_id) => {
             toast.loading("marking as Read ...");
             fetch(`http://127.0.0.1:5000/read/${notification_id}`,{
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${authToken}`,
@@ -186,8 +186,8 @@ export const LoanProvider = ({children}) => {
             .then((response) =>{
                 toast.dismiss();
                 
-                if (response.message) {
-                    toast.success(response.message); 
+                if (response.success) {
+                    toast.success(response.success); 
                     setLoading(!loading);
                 }
                 else if (response.error){
@@ -227,7 +227,8 @@ export const LoanProvider = ({children}) => {
                 return resp.json();
             })
             .then((response) => {
-                setUnreadCount(response.unread_notifications || 0); // Extract count
+                setUnreadCount(response.count || 0);
+
             })
             .catch((error) => {
                 console.error("Error fetching unread notifications:", error);
@@ -237,27 +238,27 @@ export const LoanProvider = ({children}) => {
 
         // ===> Mark  all as read 
         const markAllAsRead = () => {
-            toast.loading("marking as Read ...");
-            fetch("http://127.0.0.1:5000/read-all",{
-                method: "PUT",
+            toast.loading("Marking as Read...");
+            fetch("http://127.0.0.1:5000/read-all", {
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${authToken}`,
                 },
             })
             .then((resp) => resp.json())
-            .then((response) =>{
+            .then((response) => {
                 toast.dismiss();
-                
-                if (response.message) {
-                    toast.success(response.message); 
+        
+                if (response.success) {
+                    toast.success(response.success); 
                     setLoading(!loading);
                 }
-                else if (response.error){
+                else if (response.error) {
                     toast.error(response.error);
                 }
                 else {
-                    toast.error("Failed to mark as read");
+                    toast.error("Failed to mark all as read");
                 }
             })
             .catch((error) => {
@@ -266,6 +267,7 @@ export const LoanProvider = ({children}) => {
                 console.error("Error:", error);
             });
         };
+        
 
         
 
@@ -278,11 +280,12 @@ export const LoanProvider = ({children}) => {
         fetchRepaymentHistory,
         loanDetails,
 
-        notification,
+        notifications,
         deleteNotification,
         markAsRead,
         unreadCount,
-        markAllAsRead
+        markAllAsRead,
+        setNotifications
 
     };
     return(
