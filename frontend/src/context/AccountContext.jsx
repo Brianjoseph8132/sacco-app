@@ -181,25 +181,7 @@ export const  AccountProvider = ({children}) => {
 
     }
     
-    // Check if the loan is fully paid
-    // useEffect(() => {
-    //     fetch(`http://127.0.0.1:5000/check-loan-status/${loan_id}`, {
-    //         method: "GET",
-    //         headers: {
-    //             'Content-type': 'application/json',
-    //             Authorization: `Bearer ${authToken}`,
-    //         },
-    //     })
-    //     .then((response) => response.json())
-    //     .then((response) => {
-    //         setIsFullyPaid(response.is_fully_paid);
-    //     });
-    // }, [onChange]);
-     
-
-    
-    
-
+   
 
     const data ={
         balance,

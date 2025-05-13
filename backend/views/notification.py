@@ -62,7 +62,7 @@ def get_user_notifications():
 
 
 # Mark Notification as Read
-@notification_bp.route('/<int:notification_id>/read', methods=['PATCH'])
+@notification_bp.route('/read/<int:notification_id>', methods=['PATCH'])
 @jwt_required()
 def mark_notification_read(notification_id):
     """Mark a specific notification as read"""
@@ -75,7 +75,7 @@ def mark_notification_read(notification_id):
     notification.is_read = True
     db.session.commit()
 
-    return jsonify({"message": "Notification marked as read"}), 200
+    return jsonify({"success": "Notification marked as read"}), 200
 
 
 # Mark All Notifications as Read
@@ -92,7 +92,7 @@ def mark_all_notifications_read():
 
     db.session.commit()
     return jsonify({
-        "message": f"Marked {updated_count} notifications as read"
+        "success": f"Marked {updated_count} notifications as read"
     }), 200
 
 
@@ -113,7 +113,7 @@ def get_unread_count():
 
 
 # Delete notification
-@notification_bp.route('/<int:notification_id>/notification', methods=['DELETE'])
+@notification_bp.route('/notification/<int:notification_id>', methods=['DELETE'])
 @jwt_required()
 def delete_notification(notification_id):
     """Delete a specific notification"""
@@ -127,6 +127,6 @@ def delete_notification(notification_id):
     db.session.delete(notification)
     db.session.commit()
 
-    return jsonify({"message": "Notification deleted successfully"}), 200
+    return jsonify({"success": "Notification deleted successfully"}), 200
 
 

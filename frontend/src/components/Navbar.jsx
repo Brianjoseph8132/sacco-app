@@ -56,7 +56,6 @@ export default function Navbar() {
                 <NavLink to="/transaction" label="Transaction" active={isActive("/transaction")} setMenuOpen={setMenuOpen} />
                 <NavLink to="/appliaction" label="Loan Application" active={isActive("/appliaction")} setMenuOpen={setMenuOpen} />
                 <NavLink to="/dashboard" label="Dashboard" active={isActive("/dashboard")} setMenuOpen={setMenuOpen} />
-                <NavLink to="/repayment" label="Repayment" active={isActive("/repayment")} setMenuOpen={setMenuOpen} />
                 <NavLink to="/history" label="History" active={isActive("/history")} setMenuOpen={setMenuOpen} />
                 <Link
                   to="/notifications"

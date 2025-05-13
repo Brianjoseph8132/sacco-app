@@ -4,6 +4,7 @@ import { FaSort } from "react-icons/fa";
 import { BiMoney, BiFile } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { LoanContext } from "../context/LoanContext";
+import { useNavigate } from "react-router-dom";
 
 const StatusBadge = ({ status }) => {
   const statusStyles = {
@@ -25,54 +26,71 @@ const EmptyState = () => (
     <h3 className="text-lg font-medium text-gray-900">No Loans Found</h3>
     <p className="mt-1 text-sm text-gray-500">Get started by applying for a new loan</p>
     <Link to="/appliaction">
-        <button className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+      <button className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
         Apply Now
-        </button>
+      </button>
     </Link>
   </div>
 );
 
-const LoanTableRow = ({ loan }) => (
-  <tr className="hover:bg-gray-50 transition-colors duration-200">
-    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900">
-      ${loan.amount.toLocaleString()}
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500" title={loan.purpose}>
-      <div className="truncate max-w-xs">{loan.purpose}</div>
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap">
-      <StatusBadge status={loan.status} />
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-      {format(new Date(loan.application_date), "MMM dd, yyyy")}
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">
-      {loan.term_months} months
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-      {loan.approval_date ? format(new Date(loan.approval_date), "MMM dd, yyyy") : "-"}
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-      <Link to="/repayment">
-      <button 
-        className="text-white bg-blue-600 hover:bg-green-700 px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
-        disabled={loan.status !== "approved"}
-      >
-        Repay
-      </button>
-      </Link>
-    </td>
-  </tr>
-);
+const LoanTableRow = ({ loan }) => {
+  const navigate = useNavigate();
 
+  const handleRowClick = () => {
+    navigate(`/repayment_history/${loan.loan_id}`);
+  };
+
+  return (
+    <tr
+      onClick={handleRowClick}
+      className="group hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+    >
+      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900">
+        ${loan.amount.toLocaleString()}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500" title={loan.purpose}>
+        <div className="truncate max-w-xs">{loan.purpose}</div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <StatusBadge status={loan.status} />
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {format(new Date(loan.application_date), "MMM dd, yyyy")}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">
+        {loan.term_months} months
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {loan.approval_date ? format(new Date(loan.approval_date), "MMM dd, yyyy") : "-"}
+      </td>
+
+      {/* Repay button cell */}
+      <td
+        className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Link to={`/repayment/${loan.loan_id}`}>
+          <button
+            className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md 
+                       disabled:opacity-50 disabled:cursor-not-allowed 
+                       shadow-md group-hover:shadow-lg transition-all duration-200"
+            disabled={loan.status !== "approved"}
+          >
+            Repay
+          </button>
+        </Link>
+      </td>
+    </tr>
+  );
+};
 const History = () => {
-  const { loans } = useContext(LoanContext);  // Loans from context
+  const { loans } = useContext(LoanContext);
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
 
   const sortedLoans = useMemo(() => {
-    let result = [...(loans || [])];  // Fix: if loan is undefined, default to empty array
-  
+    let result = [...(loans || [])];
+
     if (sortField) {
       result.sort((a, b) => {
         if (sortDirection === "asc") {
@@ -81,10 +99,10 @@ const History = () => {
         return a[sortField] < b[sortField] ? 1 : -1;
       });
     }
-  
+
     return result;
   }, [loans, sortField, sortDirection]);
-  
+
   const handleSort = (field) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");

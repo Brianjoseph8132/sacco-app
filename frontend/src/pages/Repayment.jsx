@@ -1,40 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
+import { LoanContext } from "../context/LoanContext";
 
 const Repayment = () => {
-  const [formData, setFormData] = useState({
-    amount: "",
-    repaymentMethod: "",
-  });
+  
+  const { loan_id } = useParams();
 
-  const [errors, setErrors] = useState({});
+  const { addRepayment } = useContext(LoanContext);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+  const [amount, setAmount] = useState("");
+  const [payment_method, setPaymentmethod] = useState("");
+
+  const errors = {};
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let validationErrors = {};
+    addRepayment(loan_id,amount, payment_method);
 
-    // Required fields check
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) {
-        validationErrors[key] = "This field is required";
-      }
-    });
-
-    // Amount validation
-    if (formData.amount && (+formData.amount <= 0 || isNaN(formData.amount))) {
-      validationErrors.amount = "Amount must be a positive number";
-    }
-
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Repayment Submitted", formData);
-      // Reset or send to backend API
-    }
+    // reset the fields
+    setAmount("");
+    setPaymentmethod("");
   };
 
   return (
@@ -50,12 +36,11 @@ const Repayment = () => {
             <input
               type="number"
               id="amount"
-              value={formData.amount}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.amount ? 'border-red-500' : ''}`}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter repayment amount"
             />
-            {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount}</p>}
           </div>
 
           {/* Repayment Method */}
@@ -63,16 +48,15 @@ const Repayment = () => {
             <label htmlFor="repaymentMethod" className="block text-gray-700 font-medium mb-1">Repayment Method</label>
             <select
               id="repaymentMethod"
-              value={formData.repaymentMethod}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.repaymentMethod ? 'border-red-500' : ''}`}
+              value={payment_method}
+              onChange={(e) => setPaymentmethod(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Repayment Method</option>
               <option value="Bank Transfer">Bank Transfer</option>
               <option value="Mobile Money">Mobile Money</option>
               <option value="Cash">Cash</option>
             </select>
-            {errors.repaymentMethod && <p className="text-red-500 text-sm mt-1">{errors.repaymentMethod}</p>}
           </div>
 
           {/* Submit Button */}

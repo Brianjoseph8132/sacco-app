@@ -135,7 +135,8 @@ def loan_history():
             "status": loan.status,
             "application_date": loan.application_date.isoformat(),
             "approval_date": loan.approval_date.isoformat() if loan.approval_date else None,
-            "term_months": loan.term_months,  
+            "term_months": loan.term_months, 
+            "interest_rate": loan.interest_rate,
             "repayments": [],
             "notifications": []
         }
@@ -181,8 +182,8 @@ def loan_history():
 @loan_bp.route('/<int:loan_id>/repayments', methods=['GET'])
 @jwt_required()
 def get_repayments(loan_id):
-    # Verify access
-    current_user = Member.query.filter_by(username=get_jwt_identity()).first()
+    current_user_id = get_jwt_identity()
+    member = Member.query.get(current_user_id)
     loan = Loan.query.get_or_404(loan_id)
     
     if loan.member_id != current_user.id and not current_user.is_admin:

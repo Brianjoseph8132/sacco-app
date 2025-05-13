@@ -18,6 +18,7 @@ import Contact from './pages/Contact'
 import { AccountProvider } from './context/AccountContext'
 import History from './pages/History'
 import { LoanProvider } from './context/LoanContext'
+import RepaymentHistory from './pages/RepaymentHistory'
 
 
 function App() {
@@ -40,11 +41,12 @@ function App() {
                 <Route path='register' element={<Register/>}/>
                 <Route path='account' element={<CreateAccount/>}/>
                 <Route path='appliaction' element={<LoanApplication/>}/>
-                <Route path='repayment' element={<Repayment/>}/>
+                <Route path='repayment/:loan_id' element={<Repayment/>}/>
                 <Route path='transaction' element={<Transaction/>}/>
                 <Route path='dashboard' element={<DashBoard/>}/>
                 <Route path='contact' element={<Contact/>}/>
                 <Route path='/history' element={<History/>}/>
+                <Route path='/repayment_history/:loan_id' element={<RepaymentHistory/>}/>
                 </Route>
               </Route>
             </Routes>

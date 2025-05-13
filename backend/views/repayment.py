@@ -24,7 +24,7 @@ def create_notification(recipient_id, message, type, loan_id=None, sender_id=Non
 
 
 # loan repayment
-@repayment_bp.route('/<int:loan_id>/repayments', methods=['POST'])
+@repayment_bp.route('/repayments/<int:loan_id>', methods=['POST'])
 @jwt_required()
 def create_repayment(loan_id):
     current_user_id = get_jwt_identity()
@@ -95,7 +95,7 @@ def create_repayment(loan_id):
     try:
         db.session.commit()
         return jsonify({
-            "message": "Repayment recorded",
+            "success": "Repayment recorded",
             "balance_remaining": float(balance if balance > 0 else 0),
             "loan_status": loan.status,
             "overpaid_amount": float(excess_amount) if new_total_repaid > total_due else 0.0
@@ -106,7 +106,7 @@ def create_repayment(loan_id):
 
 
 # repayment history
-@repayment_bp.route('/<int:loan_id>/history', methods=['GET'])
+@repayment_bp.route('/history/<int:loan_id>', methods=['GET'])
 @jwt_required()
 def repayment_history(loan_id):
     current_user_id = get_jwt_identity()
@@ -148,31 +148,54 @@ def repayment_history(loan_id):
 
 
 
-@repayment_bp.route('/<int:loan_id>/balance', methods=['GET'])
+@repayment_bp.route('/repayment-history/<int:loan_id>', methods=['GET'])
 @jwt_required()
-def check_loan_balance(loan_id):
+def get_repayment_history(loan_id):
+    # Get authenticated member
     current_user_id = get_jwt_identity()
-    current_user = Member.query.get(current_user_id)
-    
-    loan = Loan.query.get_or_404(loan_id)
+    member = Member.query.get(current_user_id)
 
-    # Only allow user to check their own loan
-    if loan.member_id != current_user.id:
-        return jsonify({"error": "You can only check your own loan"}), 403
+    # Fetch the loan
+    loan = Loan.query.get(loan_id)
+    if not loan:
+        return jsonify({"message": "Loan not found"}), 404
 
-    total_due = loan.amount * (1 + loan.interest_rate / 100)
-    total_repaid = sum(r.amount for r in loan.repayments)
+    # Ensure the member owns this loan
+    if loan.member_id != member.id:
+        return jsonify({"message": "Unauthorized access to this loan"}), 403
+
+    # Get all repayments
+    repayments = loan.repayments
+
+    # Calculate total repaid
+    total_repaid = sum(float(r.amount) for r in repayments)
+
+    # Calculate total due (loan amount + interest)
+    loan_amount = float(loan.amount)
+    interest_amount = loan_amount * (float(loan.interest_rate) / 100)
+    total_due = loan_amount + interest_amount
+
+    # Calculate balance (total due - total repaid)
     balance = total_due - total_repaid
 
+    # Format repayment history
+    repayment_history = []
+    for r in repayments:
+        repayment_history.append({
+            "repayment_id": r.id,
+            "amount": float(r.amount),
+            "payment_date": r.payment_date.isoformat() if r.payment_date else None,
+            "payment_method": r.payment_method
+        })
+
     return jsonify({
-        "loan_id": loan_id,
-        "loan_amount": loan.amount,
-        "interest_rate": loan.interest_rate,
-        "total_due": total_due,
-        "total_repaid": total_repaid,
-        "balance": balance,
-        "loan_status": loan.status
-    }), 200
+        "loan_id": loan.id,
+        "repayment_history": repayment_history,
+        "total_repaid": round(total_repaid, 2),
+        "total_due": round(total_due, 2),
+        "balance": round(balance, 2)
+    })
+
 
 
 # loans payment summary
