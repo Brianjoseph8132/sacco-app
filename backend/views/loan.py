@@ -14,9 +14,9 @@ loan_bp = Blueprint("loan_bp", __name__)
 
 
 
-def create_notification(recipient_id, message, type, loan_id=None, sender_id=None):
+def create_notification(recipient_username, message, type, loan_id=None, sender_id=None):
     notif = Notification(
-        recipient_id=recipient_id,
+        recipient_username=recipient_username,
         sender_id=sender_id,
         message=message,
         type=type,
@@ -66,7 +66,7 @@ def create_loan():
 
     # Notification for applicant
     member_notification = Notification(
-        recipient_id=current_member.id,
+        recipient_username=current_member.id,
         title="Loan Application Submitted",
         message=f"Your loan request of {data['amount']} is under review",
         type="loan_application",
@@ -78,7 +78,7 @@ def create_loan():
     admins = Member.query.filter_by(is_admin=True).all()
     for admin in admins:
         admin_notification = Notification(
-            recipient_id=admin.id,
+            recipient_username=admin.id,
             title="New Loan Application",
             message=(
                 f"Member: {current_member.first_name} {current_member.last_name}\n"

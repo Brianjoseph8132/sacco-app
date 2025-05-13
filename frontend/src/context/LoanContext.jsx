@@ -76,6 +76,7 @@ export const LoanProvider = ({children}) => {
                         toast.dismiss();
                         toast.success(response.success);
                         navigate("/history");
+                        setLoading(!loading)
                     } else if (response.error){
                         toast.dismiss();
                         toast.error(response.error)
@@ -90,7 +91,6 @@ export const LoanProvider = ({children}) => {
 
         // =====Repayment History
         const fetchRepaymentHistory = async (loan_id) => {
-            setLoading(true);
             setError(null);
         
             try {
@@ -121,7 +121,7 @@ export const LoanProvider = ({children}) => {
             } catch (err) {
               setError(err.message);
             } finally {
-              setLoading(false);
+              setLoading(!loading);
             }
         };
 

@@ -10,9 +10,9 @@ from datetime import datetime
 repayment_bp = Blueprint("repayment_bp", __name__)
 
 
-def create_notification(recipient_id, message, type, loan_id=None, sender_id=None):
+def create_notification(recipient_username, message, type, loan_id=None, sender_id=None):
     notif = Notification(
-        recipient_id=recipient_id,
+        recipient_username=recipient_username,
         sender_id=sender_id,
         message=message,
         type=type,
@@ -79,7 +79,7 @@ def create_repayment(loan_id):
 
         # Send loan paid notification
         notification = Notification(
-            recipient_id=current_user.id,
+            recipient_username=current_user.id,
             title="Loan Fully Repaid",
             message=f"Loan #{loan_id} has been fully settled. Total paid: {new_total_repaid}",
             type="loan_paid",

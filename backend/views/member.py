@@ -88,9 +88,6 @@ def delete_account(member_id):
 #   "last_name":"Mwongela",
 #   "email": "joseph@gmail.com",
 #   "password": "joseph12",
-#   "occupation": "Pilot",
-#   "phone": "+254756783492",
-#   "id_number": 567834218,
 #   "is_admin": false
 # }
 

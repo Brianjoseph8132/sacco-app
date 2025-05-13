@@ -18,7 +18,7 @@ export const  AccountProvider = ({children}) => {
 
     const [balance, setBalance] = useState(0)
     const [transactions, setTransactions] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [hasAccount, setHasAccount] = useState(null);
     // const [is_fully_paid, setIsFullyPaid] = useState(false);
 
@@ -82,6 +82,7 @@ export const  AccountProvider = ({children}) => {
                 toast.dismiss();
                 toast.success(response.success);
                 navigate("/dashboard");
+                setLoading(!loading)
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -118,6 +119,7 @@ export const  AccountProvider = ({children}) => {
                 toast.dismiss();
                 toast.success(response.success);
                 navigate("/dashboard");
+                setLoading(!loading)
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -131,22 +133,20 @@ export const  AccountProvider = ({children}) => {
 
 
     // ==========Check if the current user if has an account=======
-    useEffect(() => {
+    const checkAccountStatus = () => {
         fetch('http://127.0.0.1:5000/has_account', {
-            method: "GET",
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: `Bearer ${authToken}`,
-            },
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
         })
-        .then((response) => response.json())
-        .then((response) => {
-            setHasAccount(response.has_account);
-        });
-    }, [loading]);
+          .then((res) => res.json())
+          .then((data) => setHasAccount(data.has_account));
+      };
+      
 
-
-    // ========LOan Application
+    // ========Loan Application
     const loanApplication = (amount, purpose, term_months, guarantor_username) => {
         toast.loading("Transacting...");
         fetch("http://127.0.0.1:5000/loan",{
@@ -170,6 +170,7 @@ export const  AccountProvider = ({children}) => {
                 toast.dismiss();
                 toast.success(response.success);
                 navigate("/home");
+                setLoading(!loading)
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -190,7 +191,8 @@ export const  AccountProvider = ({children}) => {
 
         createAccount,
         addTransactions,
-        loanApplication
+        loanApplication,
+        checkAccountStatus
     };
 
     return(

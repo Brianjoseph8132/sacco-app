@@ -11,9 +11,9 @@ admin_bp = Blueprint("admin_bp", __name__)
 
 
 
-def create_notification(recipient_id, message, type, loan_id=None, sender_id=None):
+def create_notification(recipient_username, message, type, loan_id=None, sender_id=None):
     notif = Notification(
-        recipient_id=recipient_id,
+        recipient_username=recipient_username,
         sender_id=sender_id,
         message=message,
         type=type,
@@ -82,7 +82,7 @@ def approve_loan(loan_id):
         )
 
     notification = Notification(
-        recipient_id=loan.member_id,
+        recipient_username = loan.borrower.username,
         title=f"Loan {action.title()}",
         message=notification_message,
         type=f"loan_{action}",
@@ -163,12 +163,12 @@ def send_notification():
         return jsonify({"error": "Admin access required"}), 403
 
     data = request.get_json()
-    required_fields = ['recipient_id', 'title', 'message', 'type']
+    required_fields = ['recipient_username', 'title', 'message', 'type']
     if not all(field in data for field in required_fields):
         return jsonify({"error": f"Missing required fields: {', '.join(required_fields)}"}), 400
 
     notification = Notification(
-        recipient_id=data['recipient_id'],
+        recipient_username=data['recipient_username'],
         sender_id=current_user_id,
         title=data['title'],
         message=data['message'],
@@ -206,7 +206,7 @@ def broadcast_notification():
     
     for member in members:
         notifications.append(Notification(
-            recipient_id=member.id,
+            recipient_username=member.id,
             sender_id=current_user_id,
             title=data['title'],
             message=data['message'],
@@ -242,7 +242,7 @@ def get_admin_notifications():
     end_date = request.args.get('end_date')
 
     # Base query: Only notifications where recipient is an admin
-    query = Notification.query.join(Member, Notification.recipient_id == Member.id)\
+    query = Notification.query.join(Member, Notification.recipient_username == Member.id)\
                               .filter(Member.is_admin == True)
 
     # Apply filters

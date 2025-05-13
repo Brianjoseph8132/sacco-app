@@ -8,13 +8,17 @@ import { LoanContext } from "../context/LoanContext";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const { current_user, logout } = useContext(UserContext);
-  const { hasAccount } = useContext(AccountContext);
+  const { current_user, logout, authToken } = useContext(UserContext);
+  const { hasAccount, checkAccountStatus } = useContext(AccountContext);
   const {unreadCount} = useContext(LoanContext);
 
-  // Mocked notifications count for demo. Replace this with real notifications count from context or API.
+  useEffect(() => {
+    if (authToken) {
+      checkAccountStatus();
+    }
+  }, [authToken]);
   
-
+  
   const isActive = (path) => location.pathname === path;
 
   return (
