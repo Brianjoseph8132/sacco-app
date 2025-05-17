@@ -20,39 +20,54 @@ import History from './pages/History'
 import { LoanProvider } from './context/LoanContext'
 import RepaymentHistory from './pages/RepaymentHistory'
 import Notification from './pages/Notification'
+import AdminDashboard from './pages/AdminDashboard'
+import { AdminProvider } from './context/AdminContext'
+import Members from './pages/Members'
+import Broadcast from './pages/Brodcast'
+import Send from './pages/Send'
+import LoansList from './pages/LoansList'
+
+
 
 
 function App() {
   
-
   return (
     <BrowserRouter>
       <UserProvider>
         <AccountProvider>
           <LoanProvider>
+            <AdminProvider>
+            
         
 
-            <Routes>
-              <Route>
-                <Route path='/' element={<Layout/>}>
-                <Route index element={<Home/>}/>
-                <Route path='about' element={<About/>}/>
-                <Route path='service' element={<Service/>}/>
-                <Route path='login' element={<Login/>}/>
-                <Route path='register' element={<Register/>}/>
-                <Route path='account' element={<CreateAccount/>}/>
-                <Route path='appliaction' element={<LoanApplication/>}/>
-                <Route path='repayment/:loan_id' element={<Repayment/>}/>
-                <Route path='transaction' element={<Transaction/>}/>
-                <Route path='dashboard' element={<DashBoard/>}/>
-                <Route path='contact' element={<Contact/>}/>
-                <Route path='/history' element={<History/>}/>
-                <Route path='/repayment_history/:loan_id' element={<RepaymentHistory/>}/>
-                <Route path='/notifications' element={<Notification/>}/>
+              <Routes>
+                <Route>
+                  <Route path='/' element={<Layout/>}>
+                  <Route index element={<Home/>}/>
+                  <Route path='about' element={<About/>}/>
+                  <Route path='service' element={<Service/>}/>
+                  <Route path='login' element={<Login/>}/>
+                  <Route path='register' element={<Register/>}/>
+                  <Route path='account' element={<CreateAccount/>}/>
+                  <Route path='applicaction' element={<LoanApplication/>}/>
+                  <Route path='repayment/:loan_id' element={<Repayment/>}/>
+                  <Route path='transaction' element={<Transaction/>}/>
+                  <Route path='dashboard' element={<DashBoard/>}/>
+                  <Route path='contact' element={<Contact/>}/>
+                  <Route path='history' element={<History/>}/>
+                  <Route path='repayment_history/:loan_id' element={<RepaymentHistory/>}/>
+                  <Route path='notifications' element={<Notification/>}/>
+                  <Route path='admin-dashboard' element={<AdminDashboard/>}/>
+                  <Route path='members' element={<Members/>}/>
+                  <Route path='broadcast' element={<Broadcast/>}/>
+                  <Route path='send-notification' element={<Send/>}/>
+                  <Route path='loans' element={<LoansList/>}/>
+                  </Route>
                 </Route>
-              </Route>
-            </Routes>
-
+              </Routes>
+              
+            </AdminProvider>
           </LoanProvider>
         </AccountProvider>
       </UserProvider>

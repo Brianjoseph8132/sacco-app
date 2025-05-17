@@ -138,7 +138,7 @@ export const LoanProvider = ({children}) => {
             })
             .then((response) => response.json())
             .then((response) => {
-                setNotifications(response.notifications || []); // Ensure it's always an array
+                setNotifications(response.notifications || []); 
             })
             .catch((error) => console.error("Error fetching notifications:", error));
         }, [loading]);

@@ -50,7 +50,14 @@ export const  UserProvider = ({children}) => {
                     });
     
                     toast.success("Successfully Logged in")
+
+                    // Redirect based on is_admin
+                    if (response.is_admin) {
+                    navigate("/admin-dashboard")
+                    } else {
                     navigate("/")
+                    }
+
                 }
                 else if(response.error){
                     toast.dismiss()

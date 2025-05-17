@@ -10,15 +10,14 @@ export default function Navbar() {
   const location = useLocation();
   const { current_user, logout, authToken } = useContext(UserContext);
   const { hasAccount, checkAccountStatus } = useContext(AccountContext);
-  const {unreadCount} = useContext(LoanContext);
+  const { unreadCount } = useContext(LoanContext);
 
   useEffect(() => {
     if (authToken) {
       checkAccountStatus();
     }
   }, [authToken]);
-  
-  
+
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -57,10 +56,18 @@ export default function Navbar() {
             {!hasAccount && (
               <NavLink to="/account" label="Create Account" active={isActive("/account")} setMenuOpen={setMenuOpen} />
             )}
+            {current_user?.is_admin && (
+              <NavLink
+                to="/admin-dashboard"
+                label="Admin Dashboard"
+                active={isActive("/admin-dashboard")}
+                setMenuOpen={setMenuOpen}
+              />
+            )}
             {hasAccount && (
               <>
                 <NavLink to="/transaction" label="Transaction" active={isActive("/transaction")} setMenuOpen={setMenuOpen} />
-                <NavLink to="/appliaction" label="Loan Application" active={isActive("/appliaction")} setMenuOpen={setMenuOpen} />
+                <NavLink to="/application" label="Loan Application" active={isActive("/application")} setMenuOpen={setMenuOpen} />
                 <NavLink to="/dashboard" label="Dashboard" active={isActive("/dashboard")} setMenuOpen={setMenuOpen} />
                 <NavLink to="/history" label="History" active={isActive("/history")} setMenuOpen={setMenuOpen} />
                 <Link
