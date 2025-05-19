@@ -26,6 +26,7 @@ import Members from './pages/Members'
 import Broadcast from './pages/Brodcast'
 import Send from './pages/Send'
 import LoansList from './pages/LoansList'
+import AdminNotification from './pages/AdminNotitification'
 
 
 
@@ -40,7 +41,6 @@ function App() {
             <AdminProvider>
             
         
-
               <Routes>
                 <Route>
                   <Route path='/' element={<Layout/>}>
@@ -50,7 +50,7 @@ function App() {
                   <Route path='login' element={<Login/>}/>
                   <Route path='register' element={<Register/>}/>
                   <Route path='account' element={<CreateAccount/>}/>
-                  <Route path='applicaction' element={<LoanApplication/>}/>
+                  <Route path='application' element={<LoanApplication/>}/>
                   <Route path='repayment/:loan_id' element={<Repayment/>}/>
                   <Route path='transaction' element={<Transaction/>}/>
                   <Route path='dashboard' element={<DashBoard/>}/>
@@ -63,6 +63,7 @@ function App() {
                   <Route path='broadcast' element={<Broadcast/>}/>
                   <Route path='send-notification' element={<Send/>}/>
                   <Route path='loans' element={<LoansList/>}/>
+                  <Route path='admin-notification' element={<AdminNotification/>}/>
                   </Route>
                 </Route>
               </Routes>

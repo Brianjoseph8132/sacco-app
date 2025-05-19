@@ -51,12 +51,7 @@ export const  AccountProvider = ({children}) => {
         })
         .then((response) => response.json())
         .then((response) => {
-            if (Array.isArray(response.transactions)) {
-                setTransactions(response.transactions);
-            } else {
-                setTransactions([]); // fallback to an empty array
-                console.warn("No transactions found or invalid response:", response);
-            }
+            setTransactions(response.transactions || [])
         });        
     }, [loading]);
 
@@ -169,7 +164,7 @@ export const  AccountProvider = ({children}) => {
             if (response.success) {
                 toast.dismiss();
                 toast.success(response.success);
-                navigate("/home");
+                navigate("/");
                 setLoading(!loading)
             } else if (response.error){
                 toast.dismiss();

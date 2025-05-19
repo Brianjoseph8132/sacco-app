@@ -30,7 +30,6 @@ def create_notification(recipient_username, message, type, loan_id=None, sender_
 @admin_required
 def approve_loan(loan_id):
     
-
     # Verify admin privileges
     current_user_id = get_jwt_identity()
     admin = Member.query.get(current_user_id)
@@ -93,7 +92,7 @@ def approve_loan(loan_id):
     try:
         db.session.commit()
         return jsonify({
-            "message": f"Loan {action} successfully",
+            "success": f"Loan {action} successfully",
             "new_balance": member_account.balance if action == 'approve' else None
         }), 200
     except Exception as e:
@@ -282,11 +281,12 @@ def get_admin_notifications():
             "is_read": n.is_read,
             "timestamp": n.timestamp.isoformat(),
             "loan_id": n.loan_id,
+            "loan_status": n.loan.status if n.loan else None,
             "recipient": {
                 "id": n.recipient.id,
                 "username": n.recipient.username,
                 "name": f"{n.recipient.first_name} {n.recipient.last_name}"
-            },
+            } if n.recipient else None,
             "sender": {
                 "id": n.sender.id,
                 "username": n.sender.username,

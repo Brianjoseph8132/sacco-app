@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
+import { toast } from "react-toastify";
 
 
 
@@ -14,6 +15,7 @@ export const AdminProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
     const [members, setMembers] = useState([]);
     const [loanDetails, setLoanDetails] = useState([]);
+    const [notification, setNotification] = useState([]);
 
 
     // All members
@@ -122,6 +124,61 @@ export const AdminProvider = ({children}) => {
         })
         .catch((error) => console.error("Error fetching loans:", error));
     }, [loading]);
+
+
+
+
+    // Admin Notifications 
+    useEffect(() => {
+        fetch(`http://127.0.0.1:5000/admin/notifications`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`,
+            },
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            setNotification(response.notifications || []); 
+        })
+        .catch((error) => console.error("Error fetching notifications:", error));
+    }, [loading]);
+
+
+
+    // Approval
+    const loanAction = (action, reason = "", loan_id) =>{
+        toast.loading("Sending ...");
+        fetch(`http://127.0.0.1:5000/approve/${loan_id}`,{
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${authToken}`, 
+            },
+            body: JSON.stringify({
+                action,
+                reason
+            }),
+        })
+        .then((resp) => resp.json())
+        .then((response) =>{
+            console.log(response);
+
+            if (response.success) {
+                toast.dismiss();
+                toast.success(response.success);
+                setLoading(!loading);
+            } else if (response.error){
+                toast.dismiss();
+                toast.error(response.error)
+            }else {
+                toast.dismiss();
+                toast.error("Something went wrong")
+            }
+        })
+    }
+
+    
     
 
 
@@ -139,7 +196,9 @@ export const AdminProvider = ({children}) => {
         members,
         brodcastNitification,
         sendNotification,
-        loanDetails
+        loanDetails,
+        notification,
+        loanAction
     };
 
     return(

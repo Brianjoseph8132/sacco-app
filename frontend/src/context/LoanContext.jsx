@@ -19,7 +19,7 @@ export const LoanProvider = ({children}) => {
     const [loans, setLoan] = useState([]);
     const [repayments, setRepayments] = useState([]);
     const [loanDetails, setLoanDetails] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [notifications, setNotifications] = useState([])
     const [unreadCount, setUnreadCount] = useState(0);
@@ -107,11 +107,9 @@ export const LoanProvider = ({children}) => {
               }
         
               const data = await response.json();
-        
-              // ✅ Set repayments list
+              
               setRepayments(data.repayments);
         
-              // ✅ Set loan details (same for every row)
               setLoanDetails({
                 loan_amount: data.loan_amount,
                 interest_rate: data.interest_rate,

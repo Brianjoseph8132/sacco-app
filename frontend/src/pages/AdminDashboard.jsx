@@ -14,7 +14,7 @@ const AdminDashboard = () => {
 
   const menuItems = [
     { title: "Dashboard", icon: <FiHome className="text-xl" />, path: "/admin-dashboard" },
-    { title: "Notifications", icon: <FiBell className="text-xl" />, path: "/notifications", badge: unreadCount },
+    { title: "Notifications", icon: <FiBell className="text-xl" />, path: "/admin-notification", badge: unreadCount },
     { title: "Loans", icon: <FiCreditCard className="text-xl" />, path: "/loans" },
     { title: "Members", icon: <FiUsers className="text-xl" />, path: "/members" },
     { title: "Broadcast", icon: <HiOutlineMegaphone className="text-xl" />, path: "/broadcast" },
