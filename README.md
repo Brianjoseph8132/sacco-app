@@ -2,7 +2,6 @@
 
 A simple SACCO (Savings and Credit Cooperative Organization) management application built with **Flask** and **SQLAlchemy**. The app allows members to create accounts, apply for loans, make repayments, and manage transactions. Admins can manage members, approve or reject loan requests, and receive notifications about SACCO activities.
 
-## Features
 
 ### SACCO Management System
 
