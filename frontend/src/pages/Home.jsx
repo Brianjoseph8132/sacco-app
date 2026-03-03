@@ -19,7 +19,7 @@ const Home = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 text-white mb-10 md:mb-0">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Empowering Communities Through Financial Growth</h1>
-              <p className="text-lg mb-8">Join our SACCO to access secure savings, affordable loans, and fast transactions. Build a better financial future together.</p>
+              <p className="text-lg mb-8">Join SMART SACCO to access secure savings, affordable loans, and fast transactions. Build a better financial future together.</p>
               <div className="flex flex-wrap gap-4">
               {hasAccount ? (
                 <Link to="/about">

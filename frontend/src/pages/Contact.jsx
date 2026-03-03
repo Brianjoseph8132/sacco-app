@@ -76,7 +76,7 @@ export default function Contact() {
 
           <div className="flex items-center gap-3 text-gray-700 mb-4">
             <EnvelopeIcon className="h-6 w-6 text-blue-600" />
-            <span>info@saccoexample.com</span>
+            <span>info@smartsacco@gmail.com</span>
           </div>
 
           <div className="flex items-center gap-3 text-gray-700">

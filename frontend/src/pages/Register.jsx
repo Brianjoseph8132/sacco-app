@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
   const { addMember } = useContext(UserContext);
@@ -12,13 +13,13 @@ const Register = () => {
   const [raw_password, setRawPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
-  // Fix: define errors object (empty for now since validation is not implemented)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
   const errors = {};
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
     addMember(first_name, last_name, username, email, raw_password);
   };
 
@@ -84,27 +85,45 @@ const Register = () => {
           {/* Password */}
           <div>
             <label htmlFor="password" className="block text-gray-700 font-medium mb-1">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={raw_password}
-              onChange={(e) => setRawPassword(e.target.value)}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : ''}`}
-              placeholder="Create a password"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={raw_password}
+                onChange={(e) => setRawPassword(e.target.value)}
+                className={`w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : ''}`}
+                placeholder="Create a password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-blue-500 transition-colors duration-200"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           {/* Repeat Password */}
           <div>
             <label htmlFor="repeatPassword" className="block text-gray-700 font-medium mb-1">Repeat Password</label>
-            <input
-              type="password"
-              id="repeatPassword"
-              value={repeatPassword}
-              onChange={(e) => setRepeatPassword(e.target.value)}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.repeatPassword ? 'border-red-500' : ''}`}
-              placeholder="Repeat your password"
-            />
+            <div className="relative">
+              <input
+                type={showRepeatPassword ? "text" : "password"}
+                id="repeatPassword"
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+                className={`w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.repeatPassword ? 'border-red-500' : ''}`}
+                placeholder="Repeat your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowRepeatPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-blue-500 transition-colors duration-200"
+              >
+                {showRepeatPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           {/* Register Button */}

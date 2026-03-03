@@ -16,6 +16,7 @@ export const AdminProvider = ({children}) => {
     const [members, setMembers] = useState([]);
     const [loanDetails, setLoanDetails] = useState([]);
     const [notification, setNotification] = useState([]);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 
     // All members
@@ -32,7 +33,7 @@ export const AdminProvider = ({children}) => {
             setMembers(response.members || []);
         })
         .catch((error) => console.error("Error fetching members:", error));
-    }, [loading]);
+    }, [authToken, refreshTrigger]);
 
 
 
@@ -59,7 +60,7 @@ export const AdminProvider = ({children}) => {
                 toast.dismiss();
                 toast.success(response.success);
                 navigate("/admin-dashboard");
-                setLoading(!loading);
+                setRefreshTrigger((prev) => prev + 1);
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -96,7 +97,7 @@ export const AdminProvider = ({children}) => {
                 toast.dismiss();
                 toast.success(response.success);
                 navigate("/");
-                setLoading(!loading);
+                setRefreshTrigger((prev) => prev + 1);
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -123,7 +124,7 @@ export const AdminProvider = ({children}) => {
             setLoanDetails(response.loans || []);
         })
         .catch((error) => console.error("Error fetching loans:", error));
-    }, [loading]);
+    }, [authToken, refreshTrigger]);
 
 
 
@@ -142,7 +143,7 @@ export const AdminProvider = ({children}) => {
             setNotification(response.notifications || []); 
         })
         .catch((error) => console.error("Error fetching notifications:", error));
-    }, [loading]);
+    }, [authToken, refreshTrigger]);
 
 
 
@@ -167,7 +168,7 @@ export const AdminProvider = ({children}) => {
             if (response.success) {
                 toast.dismiss();
                 toast.success(response.success);
-                setLoading(!loading);
+                setRefreshTrigger((prev) => prev + 1);
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)

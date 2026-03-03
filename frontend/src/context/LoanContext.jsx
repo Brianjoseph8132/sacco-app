@@ -23,6 +23,7 @@ export const LoanProvider = ({children}) => {
     const [error, setError] = useState(null);
     const [notifications, setNotifications] = useState([])
     const [unreadCount, setUnreadCount] = useState(0);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
    
 
 
@@ -49,7 +50,7 @@ export const LoanProvider = ({children}) => {
             .catch((error) => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-        }, [loading]);
+        }, [authToken, refreshTrigger]);
 
 
 
@@ -76,7 +77,7 @@ export const LoanProvider = ({children}) => {
                         toast.dismiss();
                         toast.success(response.success);
                         navigate("/history");
-                        setLoading(!loading)
+                        setRefreshTrigger((prev) => prev + 1);
                     } else if (response.error){
                         toast.dismiss();
                         toast.error(response.error)
@@ -118,9 +119,7 @@ export const LoanProvider = ({children}) => {
         
             } catch (err) {
               setError(err.message);
-            } finally {
-              setLoading(!loading);
-            }
+            } 
         };
 
 
@@ -139,7 +138,7 @@ export const LoanProvider = ({children}) => {
                 setNotifications(response.notifications || []); 
             })
             .catch((error) => console.error("Error fetching notifications:", error));
-        }, [loading]);
+        }, [authToken, refreshTrigger]);
 
 
         // ==> Delete Notification
@@ -158,7 +157,7 @@ export const LoanProvider = ({children}) => {
                 
                 if (response.success === "Notification deleted successfully") {
                     toast.success(response.success);
-                    setLoading(!loading);
+                    setRefreshTrigger((prev) => prev + 1);
                 } else {
                     toast.error(response.error || "Failed to delete");
                 }                
@@ -186,7 +185,7 @@ export const LoanProvider = ({children}) => {
                 
                 if (response.success) {
                     toast.success(response.success); 
-                    setLoading(!loading);
+                    setRefreshTrigger((prev) => prev + 1);
                 }
                 else if (response.error){
                     toast.error(response.error);
@@ -231,7 +230,7 @@ export const LoanProvider = ({children}) => {
             .catch((error) => {
                 console.error("Error fetching unread notifications:", error);
             });
-        }, [authToken,loading]);
+        }, [authToken, refreshTrigger]);
 
 
         // ===> Mark  all as read 
@@ -250,7 +249,7 @@ export const LoanProvider = ({children}) => {
         
                 if (response.success) {
                     toast.success(response.success); 
-                    setLoading(!loading);
+                    setRefreshTrigger((prev) => prev + 1);
                 }
                 else if (response.error) {
                     toast.error(response.error);

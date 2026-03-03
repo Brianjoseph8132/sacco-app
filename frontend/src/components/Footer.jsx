@@ -17,7 +17,7 @@ const Footer = () => {
             <div className="flex flex-col space-y-4">
               <div className="flex items-center space-x-2 mb-2">
                 <img src="https://i.pinimg.com/736x/c0/38/06/c038066a2f5259b648e4afb44acaef44.jpg" alt="SACCO Logo" className="w-10 h-10 object-contain" />
-                <h4 className="text-2xl font-bold">SACCO</h4>
+                <h4 className="text-2xl font-bold">SMART SACCO</h4>
               </div>
               <p className="text-gray-400">Building financial futures together</p>
             </div>
@@ -56,7 +56,7 @@ const Footer = () => {
 
           {/* Bottom */}
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
-            <p>© 2024 SACCO. All rights reserved.</p>
+            <p>© 2026 SACCO. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 
-
-
-
 export const  AccountContext = createContext();
 
 
@@ -18,9 +15,9 @@ export const  AccountProvider = ({children}) => {
 
     const [balance, setBalance] = useState(0)
     const [transactions, setTransactions] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [hasAccount, setHasAccount] = useState(null);
     // const [is_fully_paid, setIsFullyPaid] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 
 
@@ -37,7 +34,7 @@ export const  AccountProvider = ({children}) => {
         .then((response) => {
             setBalance(response.balance);
         });
-    }, [loading]);
+    }, [authToken, refreshTrigger]);
 
 
      // =========Transaction History======
@@ -53,7 +50,7 @@ export const  AccountProvider = ({children}) => {
         .then((response) => {
             setTransactions(response.transactions || [])
         });        
-    }, [loading]);
+    }, [authToken, refreshTrigger]);
 
     // // =========Transaction=========
 
@@ -77,7 +74,7 @@ export const  AccountProvider = ({children}) => {
                 toast.dismiss();
                 toast.success(response.success);
                 navigate("/dashboard");
-                setLoading(!loading)
+                setRefreshTrigger((prev) => prev + 1)
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -114,7 +111,7 @@ export const  AccountProvider = ({children}) => {
                 toast.dismiss();
                 toast.success(response.success);
                 navigate("/dashboard");
-                setLoading(!loading)
+                setRefreshTrigger((prev) => prev + 1)
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)
@@ -138,7 +135,7 @@ export const  AccountProvider = ({children}) => {
         })
           .then((res) => res.json())
           .then((data) => setHasAccount(data.has_account));
-      };
+    };
       
 
     // ========Loan Application
@@ -164,8 +161,8 @@ export const  AccountProvider = ({children}) => {
             if (response.success) {
                 toast.dismiss();
                 toast.success(response.success);
-                navigate("/");
-                setLoading(!loading)
+                navigate("/dashboard");
+                setRefreshTrigger((prev) => prev + 1)
             } else if (response.error){
                 toast.dismiss();
                 toast.error(response.error)

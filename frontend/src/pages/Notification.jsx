@@ -4,10 +4,6 @@ import { LoanContext } from "../context/LoanContext";
 import { FaRegBell, FaCheck, FaTrash } from "react-icons/fa";
 
 
-
-
-
-
 const Notification = () => {
 
   const {notifications,deleteNotification, markAsRead, markAllAsRead} = useContext(LoanContext);

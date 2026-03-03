@@ -46,7 +46,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="text-center md:text-left md:w-1/2 mb-10 md:mb-0">
-              <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">About Our SACCO</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">About SMART SACCO</h1>
               <p className="text-xl text-blue-100">Empowering communities through financial inclusion and cooperative growth since 1995.</p>
             </div>
             <div className="md:w-1/2">
@@ -67,7 +67,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
-              <p className="text-lg text-gray-600 mb-4">Founded in 1995, our SACCO has grown from a small community initiative to a leading financial cooperative serving thousands of members.</p>
+              <p className="text-lg text-gray-600 mb-4">Founded in 2019, SMART SACCO has grown from a small community initiative to a leading financial cooperative serving thousands of members.</p>
               <div className="space-y-4">
                 <div className="flex items-center">
                   <span className="text-2xl font-bold text-blue-600 mr-4">25+</span>
@@ -141,7 +141,7 @@ const About = () => {
       <div className="bg-blue-600 py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
-          <p className="text-white text-xl mb-8">Join our SACCO today and secure your financial future</p>
+          <p className="text-white text-xl mb-8">Join SMART SACCO today and secure your financial future</p>
           
           <Link to="/register">
             <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300">

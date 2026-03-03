@@ -31,7 +31,7 @@ export default function Navbar() {
           onError={(e) => (e.target.src = "fallback-logo.png")}
         />
         <Link to="/" className="text-2xl font-bold text-blue-600">
-          SACCO
+          SMART SACCO
         </Link>
       </div>
 
